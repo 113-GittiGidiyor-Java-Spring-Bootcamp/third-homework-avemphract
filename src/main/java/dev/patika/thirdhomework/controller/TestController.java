@@ -11,6 +11,7 @@ import dev.patika.thirdhomework.utils.RandomCourseGenerator;
 import dev.patika.thirdhomework.utils.RandomInstructorGenerator;
 import dev.patika.thirdhomework.utils.RandomStudentGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +26,10 @@ public class TestController {
     InstructorService instructorService;
     CourseService courseService;
 
+    private int studentCount=1000;
+    private int instructorCount=50;
+    private int courseCount=120;
+
     @Autowired
     public TestController(StudentService studentService, InstructorService instructorService, CourseService courseService) {
         this.studentService = studentService;
@@ -33,24 +38,24 @@ public class TestController {
     }
 
     @GetMapping("/test")
-    public void test(){
+    public ResponseEntity<String> test(){
         RandomCourseGenerator courseGenerator=new RandomCourseGenerator();
         RandomInstructorGenerator instructorGenerator=new RandomInstructorGenerator();
         RandomStudentGenerator studentGenerator=new RandomStudentGenerator(10,35);
 
 
         List<Student> students=new ArrayList<>();
-        for (int i=0;i<1000;i++){
+        for (int i=0;i<studentCount;i++){
             students.add(studentGenerator.generateRandomStudent());
         }
 
         List<Instructor> instructors=new ArrayList<>();
-        for (int i=0;i<50;i++){
+        for (int i=0;i<instructorCount;i++){
             instructors.add(instructorGenerator.generateInstructor());
         }
 
         List<Course> courses=new ArrayList<>();
-        for (int i=0;i<120;i++){
+        for (int i=0;i<courseCount;i++){
             courses.add(courseGenerator.generateCourse());
         }
 
@@ -70,5 +75,10 @@ public class TestController {
             instructorService.update(instructor);
         for (Course course:courses)
             courseService.update(course);
+
+        return ResponseEntity.ok("Random test entities added to data base and relations are connected\n" +
+                "student count: "+studentService.findAll().size()+"\n" +
+                "instructor count: "+instructorService.findAll().size()+"\n" +
+                "course count: "+courseService.findAll().size());
     }
 }

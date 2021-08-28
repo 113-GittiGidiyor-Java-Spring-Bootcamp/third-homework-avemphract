@@ -32,7 +32,7 @@ public class InstructorController implements BaseController<Instructor> {
         return new ResponseEntity<>(instructorService.findById(id),HttpStatus.OK);
     }
 
-    @Override
+    @PutMapping("/instructor")
     public ResponseEntity<Instructor> update(Instructor instructor) {
         return new ResponseEntity<>(instructorService.update(instructor),HttpStatus.OK);
     }

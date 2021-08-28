@@ -39,7 +39,7 @@ public class StudentController implements BaseController<Student> {
         return new ResponseEntity<>(studentService.save(student),HttpStatus.OK);
     }
 
-    @Override
+    @PutMapping("/students")
     public ResponseEntity<Student> update(Student student) {
         return new ResponseEntity<>(studentService.update(student),HttpStatus.OK);
     }
